@@ -39,19 +39,9 @@ display(data)
 X = data
 y = data.pop('class')
 
-# Encode the label
-from sklearn import preprocessing
-le = preprocessing.LabelEncoder()
-le.fit(y)
-
-print('Classes of the label:')
-print(le.classes_)
-
-y = list(le.transform(y))
-
 # Split the data
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
 
 # Train the NB Classifier model
 from sklearn.naive_bayes import GaussianNB
@@ -60,13 +50,12 @@ clf = gnb.fit(X_train, y_train)
 
 # Predict the test data
 y_pred = clf.predict(X_test)
-#y_pred = list(le.inverse_transform(y_pred))
 
 # Create a local csv
 pd.DataFrame({'actual' : y_test,'pred' : y_pred}).to_csv('test.csv',index=False)
 
 # Deduce the metrics
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix,ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix,ConfusionMatrixDisplay, classification_report
 
 print("Number of mislabeled points out of a total %d points : %d" % (X_test.shape[0], (y_test != y_pred).sum()))
 
@@ -86,3 +75,6 @@ cm=confusion_matrix(y_test,y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                               display_labels=clf.classes_)
 _=disp.plot() 
+
+print()
+print(classification_report(y_test,y_pred))
