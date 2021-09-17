@@ -33,7 +33,7 @@ def loadData(path,filename):
            print (message)
            
 # Deduce the metrics
-from sklearn.metrics import accuracy_score, confusion_matrix,ConfusionMatrixDisplay, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix,ConfusionMatrixDisplay
 
 def metrics(test,pred,modelname):
     try:
@@ -47,13 +47,10 @@ def metrics(test,pred,modelname):
         cm=confusion_matrix(test,pred)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                                       display_labels=['Iris-setosa','Iris-versicolor','Iris-virginica'])
-        _=disp.plot() 
+        _=disp.plot()
+        disp.ax_.set(title=modelname)
         print()
         
-        # Confusion report
-        print(classification_report(test,pred))
-        print()
-        print('Confusion matrix for {:s} model:'.format(modelname))
             
     except Exception as ex:
            print ("-----------------------------------------------------------------------")
