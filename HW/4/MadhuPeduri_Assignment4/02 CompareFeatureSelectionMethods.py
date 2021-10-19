@@ -80,8 +80,8 @@ from sklearn import preprocessing
 le = preprocessing.LabelEncoder()
 le.fit(y)
 
-print('Classes of the label:')
-print(le.classes_)
+#print('Classes of the label:')
+#print(le.classes_)
 
 y = list(le.transform(y))
 
@@ -100,9 +100,9 @@ X_test2 = X_train; y_test2 = y_train
 print('Number of samples in fold1:{}'.format(len(X_train1)))
 print('Number of samples in fold2:{}'.format(len(X_train2)))
 
-##################################
-# Part 1
-##################################
+print('##################################')
+print('# Part 1')
+print('##################################')
 # Model-8-Support Vector Machine - Linear SVC
 from sklearn.svm import SVC
 m1 = SVC(gamma=.1, kernel='linear', probability=True)
@@ -123,9 +123,9 @@ y_testr = le.inverse_transform([*y_test1, *y_test2])
 # Metrics
 metrics(y_testr,y_predr, 'Support Vector Machines - Linear SVC')
 
-##################################
-# Part 2 - Principal component analysis
-##################################
+print('##################################')
+print('# Part 2 - Principal component analysis')
+print('##################################')
 import numpy as np
 from numpy import array
 from numpy import mean
@@ -205,9 +205,9 @@ y_testr = le.inverse_transform([*y_tst1, *y_tst2])
 # Metrics
 metrics(y_testr,y_predr, 'Support Vector Machines - Linear SVC')
 
-##################################
-# Part 3 - Simulated annaling
-##################################
+print('##################################')
+print('# Part 3 - Simulated annaling')
+print('##################################')
 def modelsvm(df,label):
     try:
         X_train, X_test, y_train, y_test = train_test_split(df, label, test_size=0.5, random_state=1)
@@ -333,9 +333,9 @@ for i in range(iters):
     print('Status:',stat)
     print('---------------------------------------------')
     
-##################################
-# Part 4 - Genetic algorithm
-##################################
+print('##################################')
+print('# Part 4 - Genetic algorithm')
+print('##################################')
 # crossovers
 from itertools import combinations
 def union(t):
@@ -438,10 +438,15 @@ for g in range(gen):
         acc_list = evalsvm(eval_set)
         acc_df = pd.DataFrame(acc_list).sort_values('accuracy',ascending=False)
         
-        print('-----------------------')
+        print('*****************')
         print('Generation:', g)
-        with pd.option_context('max_colwidth', 1000):
-            print(acc_df.iloc[0:5,:])
+        print('*****************')
+        #with pd.option_context('max_colwidth', 1000):
+        fi = 0
+        for fi in range(5):
+            print('....................')
+            print('Feature set',acc_df.iloc[fi,0])
+            print('Accuracy', acc_df.iloc[fi,1])
         
         # Terminate
         if (acc_df['accuracy'][0] >= 1):
