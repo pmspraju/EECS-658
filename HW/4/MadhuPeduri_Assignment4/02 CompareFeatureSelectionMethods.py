@@ -123,6 +123,8 @@ y_testr = le.inverse_transform([*y_test1, *y_test2])
 # Metrics
 metrics(y_testr,y_predr, 'Support Vector Machines - Linear SVC')
 
+part1_features = X.columns
+
 print('##################################')
 print('# Part 2 - Principal component analysis')
 print('##################################')
@@ -205,6 +207,8 @@ y_testr = le.inverse_transform([*y_tst1, *y_tst2])
 # Metrics
 metrics(y_testr,y_predr, 'Support Vector Machines - Linear SVC')
 
+part2_features = ['First Principal component']
+
 print('##################################')
 print('# Part 3 - Simulated annaling')
 print('##################################')
@@ -236,8 +240,9 @@ def modelsvm(df,label):
         
         # Metrics
         acc = accuracy_score(y_testr, y_predr)
+        cmsv=confusion_matrix(y_testr, y_predr)
         
-        return acc 
+        return acc, cmsv 
     except Exception as ex:
            print ("Exception occured in svm model-------------------------")
            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -295,7 +300,7 @@ for i in range(iters):
         continue
         
     temp_df = iris_pca[current_subset]
-    model_acc = modelsvm(temp_df,y)
+    model_acc, cmsv = modelsvm(temp_df,y)
     
     if (accepted_accuracy < model_acc):
         accepted_accuracy = model_acc
@@ -332,6 +337,10 @@ for i in range(iters):
     print('Random uniform:',rr)
     print('Status:',stat)
     print('---------------------------------------------')
+
+part3_features = accepted_subset
+print('Confusion Matrix - Simulated annealing:')
+print(cmsv)
     
 print('##################################')
 print('# Part 4 - Genetic algorithm')
@@ -404,10 +413,11 @@ def evalsvm(eval_set):
         acc_list = []
         for eset in eval_set:
             temp_df = iris_pca[eset]
-            model_acc = modelsvm(temp_df,y)
+            model_acc, cmsv = modelsvm(temp_df,y)
             adict = {}
             adict['Best set'] = eset
             adict['accuracy'] = model_acc
+            adict['cm'] = cmsv
             acc_list.append(adict)
             
         return acc_list
@@ -447,6 +457,11 @@ for g in range(gen):
             print('....................')
             print('Feature set',acc_df.iloc[fi,0])
             print('Accuracy', acc_df.iloc[fi,1])
+            
+            if (g == 49 and fi ==0):
+                part4_features = acc_df.iloc[fi,0]
+                print('Confusion Matrix - Genetic algorithm:')
+                print(acc_df.iloc[fi,2])
         
         # Terminate
         if (acc_df['accuracy'][0] >= 1):
@@ -460,3 +475,11 @@ for g in range(gen):
     cv = crossovers(init_pop)
     mv = [mutations(x) for x in cv]
     eval_set = init_pop + cv + mv
+
+print('*****************************')
+print('Final Metrics for each part:')
+print('*****************************')
+print('Part 1 - SVM', part1_features)
+print('Part 2 - PCA', part2_features)
+print('Part 3 - Simulated annealing', part3_features)
+print('Part 4 - Genetic algorithm', part4_features)
