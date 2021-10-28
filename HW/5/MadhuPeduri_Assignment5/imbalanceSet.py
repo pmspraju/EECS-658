@@ -120,7 +120,7 @@ cmetrics = pd.DataFrame(zip(precision, recall, specificity), columns=['precision
 print('Class balanced accuracy of the Neural Network Model model:', sum([min(i,j) for i,j in zip(precision,recall)])/3)
 
 # Balanced accuracy
-print('Balanced accuracy of the Neural Network Model model:', np.mean([np.mean([i,j]) for i,j in zip(precision,recall)]) )
+print('Balanced accuracy of the Neural Network Model model:', np.mean([np.mean([i,j]) for i,j in zip(specificity,recall)]) )
 
 # Print sklearn balanced accuracy
 from sklearn.metrics import balanced_accuracy_score
