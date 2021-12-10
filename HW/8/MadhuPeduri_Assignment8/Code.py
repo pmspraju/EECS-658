@@ -294,7 +294,7 @@ print(changeToDf(Qvalue).to_string())
 print()
 
 itrs = 0
-while (itrs <= 100):
+while (itrs <= 500):
     
     # Choose random state
     rs = random.choice(states.ravel())
@@ -318,7 +318,7 @@ while (itrs <= 100):
     
     itrs += 1
     
-    if(itrs in [1,10,100]):
+    if(itrs in [1,10,500]):
         print('Iteration:',itrs)
         print('---------------')
         print(changeToDf(Qvalue).to_string())
